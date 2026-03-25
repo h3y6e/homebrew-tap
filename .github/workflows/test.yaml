@@ -1,0 +1,46 @@
+name: test
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "Formula/*.rb"
+      - ".github/workflows/test.yaml"
+      - ".github/workflows/update.yaml"
+      - "mise.toml"
+  push:
+    branches:
+      - main
+    paths:
+      - "Formula/*.rb"
+      - ".github/workflows/test.yaml"
+      - ".github/workflows/update.yaml"
+      - "mise.toml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v6
+      - run: |
+          set -euo pipefail
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          echo "$HOMEBREW_PREFIX/bin" >>"$GITHUB_PATH"
+          echo "$HOMEBREW_PREFIX/sbin" >>"$GITHUB_PATH"
+      - run: brew tap h3y6e/tap "$GITHUB_WORKSPACE"
+      - run: |
+          set -euo pipefail
+          shopt -s nullglob
+
+          for file in Formula/*.rb; do
+            formula="h3y6e/tap/$(basename "${file%.rb}")"
+            brew audit --strict --formula "$formula"
+            brew install "$formula"
+            brew test "$formula"
+          done
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: "1"
+          HOMEBREW_NO_INSTALL_CLEANUP: "1"
+          HOMEBREW_NO_INSTALL_FROM_API: "1"

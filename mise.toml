@@ -1,0 +1,6 @@
+[tools]
+"aqua:Songmu/maltmill" = "1.5.0"
+
+[tasks.update]
+description = "Update formulae with maltmill"
+run = "maltmill -w Formula/*.rb"
