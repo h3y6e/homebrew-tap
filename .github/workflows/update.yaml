@@ -1,0 +1,52 @@
+name: update
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+      - uses: actions/checkout@v6
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: false
+      - uses: jdx/mise-action@v4
+      - run: mise run update
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+      - id: changes
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- Formula/*.rb; then
+            echo 'changed=false' >>"$GITHUB_OUTPUT"
+          else
+            echo 'changed=true' >>"$GITHUB_OUTPUT"
+          fi
+      - if: ${{ steps.changes.outputs.changed == 'true' }}
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          branch-token: ${{ steps.app-token.outputs.token }}
+          branch: fix/update-formulae
+          delete-branch: true
+          title: "fix: update Homebrew formulae"
+          commit-message: |
+            fix: update Homebrew formulae
+
+            Upstream release metadata changed, so update the Homebrew tap
+            formulae with maltmill.
