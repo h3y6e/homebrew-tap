@@ -1,6 +1,6 @@
 # homebrew-tap
 
-Homebrew tap for @h3y6e tools.
+Homebrew tap for [@h3y6e](https://github.com/h3y6e) tools.
 
 ## Install
 
