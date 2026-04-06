@@ -29,24 +29,16 @@ jobs:
       - run: mise run update
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-      - id: changes
-        run: |
-          set -euo pipefail
-          if git diff --quiet -- Formula/*.rb; then
-            echo 'changed=false' >>"$GITHUB_OUTPUT"
-          else
-            echo 'changed=true' >>"$GITHUB_OUTPUT"
-          fi
-      - if: ${{ steps.changes.outputs.changed == 'true' }}
+      - id: pr
         uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ steps.app-token.outputs.token }}
-          branch-token: ${{ steps.app-token.outputs.token }}
           branch: fix/update-formulae
-          delete-branch: true
-          title: "fix: update Homebrew formulae"
-          commit-message: |
-            fix: update Homebrew formulae
-
-            Upstream release metadata changed, so update the Homebrew tap
-            formulae with maltmill.
+          commit-message: "fix: update formulae"
+          title: "fix: update formulae"
+          body: |
+            Update the Homebrew formulae to the latest upstream releases.
+      - if: ${{ steps.pr.outputs.pull-request-number }}
+        run: gh pr merge '${{ steps.pr.outputs.pull-request-number }}' --auto
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
