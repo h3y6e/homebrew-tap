@@ -1,30 +1,30 @@
 class Cxg < Formula
   desc "Commit message linter for AI agents"
   homepage "https://github.com/h3y6e/cxg"
-  version "2026.4.3"
+  version "2026.4.4"
   license "MIT"
 
   on_macos do
     on_arm do
-      url "https://github.com/h3y6e/cxg/releases/download/v2026.4.3/cxg_2026.4.3_darwin_arm64.tar.gz"
-      sha256 "9e32c18e63d038f2bf4d3eee350b119cb1852c025806e93f55233e9e3c186cd1"
+      url "https://github.com/h3y6e/cxg/releases/download/v2026.4.4/cxg_2026.4.4_darwin_arm64.tar.gz"
+      sha256 "195f0430964c40708c18ae5fff0fed21f99dfc5541f438b3af52813038bed475"
     end
 
     on_intel do
-      url "https://github.com/h3y6e/cxg/releases/download/v2026.4.3/cxg_2026.4.3_darwin_amd64.tar.gz"
-      sha256 "aab38205ddcb98fa219d2512896040214d09ab31df1c7aabfe294f812866306a"
+      url "https://github.com/h3y6e/cxg/releases/download/v2026.4.4/cxg_2026.4.4_darwin_amd64.tar.gz"
+      sha256 "6083301fefb4446e1e87b26a746d9b479fdfb93984ec084123ed60a6aa7dc06f"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/h3y6e/cxg/releases/download/v2026.4.3/cxg_2026.4.3_linux_arm64.tar.gz"
-      sha256 "71d695c5bf7b9f15cb5c7f8caab20c662c7a31c52b81d5300ed7289d538f5ad3"
+      url "https://github.com/h3y6e/cxg/releases/download/v2026.4.4/cxg_2026.4.4_linux_arm64.tar.gz"
+      sha256 "467a7b03bb11ef4f91082f76206ccdfc80cbde88f4f9db57c847a7eca3cf49ce"
     end
 
     on_intel do
-      url "https://github.com/h3y6e/cxg/releases/download/v2026.4.3/cxg_2026.4.3_linux_amd64.tar.gz"
-      sha256 "2ae1fd359085587b7cd99c9091d906d22b6b653f2da13fa7d6a8e54e97cc8a53"
+      url "https://github.com/h3y6e/cxg/releases/download/v2026.4.4/cxg_2026.4.4_linux_amd64.tar.gz"
+      sha256 "20955438c7ca401c0fd83d86ddf2edc62c2002dde6d07bda2d451a34a117410e"
     end
   end
 
